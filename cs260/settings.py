@@ -38,6 +38,11 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 )
 
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'templates'),
+	os.path.join(BASE_DIR, 'todolists/templates'),
+)
+
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -80,3 +85,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    ('assets', os.path.join(BASE_DIR, 'static')),
+)
