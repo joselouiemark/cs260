@@ -15,3 +15,10 @@ class HomePageTest(TestCase):
 		self.assertTrue(response.content.startswith(b'<html>'))
 		self.assertIn(b'<title>To-Do lists</title>', response.content)
 		self.assertTrue(response.content.endswith(b'</html>'))
+	
+	def test_login_page_returns_correct_html(self):
+		request = HttpRequest()
+		response = login(request)
+		self.assertTrue(response.content.startswith(b'<html>'))
+		self.assertIn(b'<title>Login</title>', response.content)
+		self.assertTrue(response.content.endswith(b'</html>'))
