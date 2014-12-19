@@ -23,7 +23,7 @@ class RegistrationTest(unittest.TestCase):
 		
 		# He clicked register
 		reg_link = self.browser.find_element_by_link_text('Register')
-		home_link.click()
+		reg_link.click()
 		
 		# Reset browser
 		body = self.browser.find_element_by_tag_name('body')
@@ -67,16 +67,18 @@ class RegistrationTest(unittest.TestCase):
 		# user clicks the save button
 		self.browser.find_element_by_css_selector("input[value='login']").click()
 		
-		
-		
-
-		
 		# He then is redirected to the main dashboard where there is a list of to-do things, which is empty for now
+		self.assertIn('To-Do List', self.browser.title)
+		
 		# He is greeted with a note "Hi John!"
+		body = self.browser.find_element_by_tag_name('body')
+		self.assertIn('Hi John!', body.text)
 
 		# He is then decided to logout for now and sleep
+		logout_link = self.browser.find_element_by_link_text('Logout')
+		logout_link.click()
 		
-		self.fail('Finish the test!')
+		#self.fail('Finish the test!')
 
 if __name__ == '__main__':
 	unittest.main(warnings='ignore')
