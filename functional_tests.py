@@ -52,7 +52,13 @@ class RegistrationTest(unittest.TestCase):
 		# John clicks the save button
 		self.browser.find_element_by_css_selector("input[value='register']").click()
 		
-
+		# Goes to the registration confirmation page and is registered
+		body = self.browser.find_element_by_tag_name('body')
+		self.assertIn('You have registered', body.text)
+		
+		login_link = self.browser.find_element_by_link_text('here')
+		login_link.click()
+		
 		# He is then redirected to the homepage and invited again to login or create an account
 		# Reset browser
 		body = self.browser.find_element_by_tag_name('body')
@@ -68,15 +74,19 @@ class RegistrationTest(unittest.TestCase):
 		self.browser.find_element_by_css_selector("input[value='login']").click()
 		
 		# He then is redirected to the main dashboard where there is a list of to-do things, which is empty for now
-		self.assertIn('To-Do List', self.browser.title)
+		self.assertIn('TODO', self.browser.title)
 		
 		# He is greeted with a note "Hi John!"
 		body = self.browser.find_element_by_tag_name('body')
-		self.assertIn('Hi John!', body.text)
+		self.assertIn('Hi John Laput!', body.text)
 
 		# He is then decided to logout for now and sleep
 		logout_link = self.browser.find_element_by_link_text('Logout')
 		logout_link.click()
+		
+		#checked if loggedout
+		body = self.browser.find_element_by_tag_name('body')
+		self.assertIn('You are now logged out', body.text)
 		
 		#self.fail('Finish the test!')
 

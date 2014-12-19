@@ -1,9 +1,12 @@
  {% extends "base.html" %}
 
 {% block sidebar %}
+Hi {{ full_name }}!
+<br/>
 <ul>
 	<li><a href="/todolists/all">Todo list</a></li>
 	<li><a href="/todolists/create">Add Item</a></li>
+	<li><a href="/accounts/logout">Logout</a></li>
 </ul>
 <br/>
 <hr />
