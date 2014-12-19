@@ -71,7 +71,46 @@ class HomePageTest(TestCase):
 		self.assertIn(b'You have registered', response.content)
 		self.assertTrue(response.content.endswith(b'</html>'))
 
+	def test_login_user(self):
+		#tests login user page page
+		request = HttpRequest()
+		response = login(request)
+		self.assertTrue(response.content.startswith(b'<!DOCTYPE html>'))
+		self.assertIn(b'<input type="submit" value="login" />', response.content)
+		self.assertTrue(response.content.endswith(b'</html>'))
+		
+	def test_login_fail_user_authentication(self):
+		#tests that it would go to fail page if not successfully loggedin
+		request = HttpRequest()
+		request.method = 'POST'
+		#use admin
+		request.POST['username'] = 'invaliduser'
+		request.POST['password'] = 'invaliduserpwd'
+		#should be redirected to all to-dos
+		response = auth_view(request)
+		self.assertEqual(response['location'], '/accounts/invalid')
+		
+	def test_loggedin_page(self):
+		#tests the logged in page
+		request = HttpRequest()
+		#get simulated user
+		request.user = self.user
+		response = loggedin(request)
+		#should have this message
+		self.assertTrue(response.content.startswith(b'<!DOCTYPE html>'))
+		self.assertIn(b'you are now logged in!', response.content)
+		self.assertTrue(response.content.endswith(b'</html>'))
 	
+	def test_invalid_login(self):
+		#tests that it would go to fail page if not successfully loggedin
+		request = HttpRequest()
+		#get simulated user
+		request.user = self.user
+		response = invalid_login(request)
+		#should have ask user to login again
+		self.assertTrue(response.content.startswith(b'<!DOCTYPE html>'))
+		self.assertIn(b'<input type="submit" value="login" />', response.content)
+		self.assertTrue(response.content.endswith(b'</html>'))
 	
 		
 		
