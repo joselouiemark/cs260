@@ -34,6 +34,13 @@ class HomePageTest(TestCase):
 		# there is an login form in the home page
 		self.assertIn(b'<input type="submit" value="login" />', response.content)
 		self.assertTrue(response.content.endswith(b'</html>'))
+		
+	def test_register_page_returns_correct_html(self):
+		request = HttpRequest()
+		response = home_page(request)
+		self.assertTrue(response.content.startswith(b'<!DOCTYPE html>'))
+		self.assertIn(b'<title>Register</title>', response.content)
+		self.assertTrue(response.content.endswith(b'</html>'))
 	
 	def test_register_can_save_a_user_registration(self):
 		request = HttpRequest()
@@ -60,6 +67,7 @@ class HomePageTest(TestCase):
 		response = register_success(request)
 		#should have this message
 		self.assertTrue(response.content.startswith(b'<!DOCTYPE html>'))
+		self.assertIn(b'<title>Register Success</title>', response.content)
 		self.assertIn(b'You have registered', response.content)
 		self.assertTrue(response.content.endswith(b'</html>'))
 
