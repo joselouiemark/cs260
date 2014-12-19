@@ -28,7 +28,15 @@ def register_success(request):
 	return render_to_response('register_success.html')
 
 def auth_view(request):
-	return render_to_response('')
+	username = request.POST.get('username', '')
+	password = request.POST.get('password', '')
+	user = auth.authenticate(username=username, password=password)
+	
+	if user is not None:
+		auth.login(request, user)
+		return HttpResponseRedirect('/scheduler/all')
+	else:
+		return HttpResponseRedirect('/accounts/invalid')
 
 def loggedin(request):
 	return render_to_response('')
