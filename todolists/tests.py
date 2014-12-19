@@ -28,7 +28,7 @@ class HomePageTest(TestCase):
 
 	def test_home_page_returns_correct_html(self):
 		request = HttpRequest()
-		response = home_page(request)
+		response = login(request)
 		self.assertTrue(response.content.startswith(b'<!DOCTYPE html>'))
 		self.assertIn(b'<title>To-Do</title>', response.content)
 		# there is an login form in the home page
@@ -37,7 +37,7 @@ class HomePageTest(TestCase):
 		
 	def test_register_page_returns_correct_html(self):
 		request = HttpRequest()
-		response = home_page(request)
+		response = register_user(request)
 		self.assertTrue(response.content.startswith(b'<!DOCTYPE html>'))
 		self.assertIn(b'<title>Register</title>', response.content)
 		self.assertTrue(response.content.endswith(b'</html>'))

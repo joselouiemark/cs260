@@ -26,3 +26,15 @@ def register_user(request):
 
 def register_success(request):
 	return render_to_response('register_success.html')
+
+def auth_view(request):
+	return render_to_response('')
+
+def loggedin(request):
+	return render_to_response('')
+					
+def invalid_login(request):
+	return render_to_response('')
+					
+def logout(request):
+	return render_to_response('')
