@@ -12,7 +12,6 @@ from datetime import datetime
 #from todolists.views import home_page
 
 from cs260.views import login
-from cs260.views import login
 from cs260.views import auth_view
 from cs260.views import loggedin
 from cs260.views import invalid_login
