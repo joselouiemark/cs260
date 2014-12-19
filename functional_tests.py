@@ -18,16 +18,16 @@ class RegistrationTest(unittest.TestCase):
 		
 		# He is invited to login or create an account
 		body = self.browser.find_element_by_tag_name('body')
-		self.assertIn('Username', body.text)
-		self.assertIn('First Name', body.text)
+		self.assertIn('User name:', body.text)
+		self.assertIn('Password:', body.text)
 		
 		# He clicked register
 		reg_link = self.browser.find_element_by_link_text('Register')
 		home_link.click()
 		
 		# Reset browser
-		# Make sure that we are in registration page
 		body = self.browser.find_element_by_tag_name('body')
+		# Make sure that we are in registration page
 		self.assertIn('Username', body.text)
 		self.assertIn('First Name', body.text)
 		self.assertIn('Last Name', body.text)
@@ -36,25 +36,41 @@ class RegistrationTest(unittest.TestCase):
 		
 		
 		# He filled up the form
-		self.browser.find_element_by_name('username').send_keys("louieano")
-		self.browser.find_element_by_name('first_name').send_keys("louie")
-		self.browser.find_element_by_name('last_name').send_keys("ano")
-		self.browser.find_element_by_name('email').send_keys("louie@gmail.com")
-		self.browser.find_element_by_name('password1').send_keys("louie123")
-		self.browser.find_element_by_name('password2').send_keys("louie123")
-		
 		# He typed "johnlaput" on the user name text box
+		self.browser.find_element_by_name('username').send_keys("johnlaput")
 		# He typed "John" on the first name text box
+		self.browser.find_element_by_name('first_name').send_keys("John")
 		# He typed "Laput" on the last name text box
+		self.browser.find_element_by_name('last_name').send_keys("Laput")
 		# He typed "johnlaput@gmail.com" on the email text box
+		self.browser.find_element_by_name('email').send_keys("johnlaput@gmail.com")
 		# He typed "pwd123" on the password text box
+		self.browser.find_element_by_name('password1').send_keys("pwd123")
 		# He typed "pwd123" on the retype password text box
+		self.browser.find_element_by_name('password2').send_keys("pwd123")
+		self.browser.implicitly_wait(3)
+		# John clicks the save button
+		self.browser.find_element_by_css_selector("input[value='register']").click()
+		
 
 		# He is then redirected to the homepage and invited again to login or create an account
-
+		# Reset browser
+		body = self.browser.find_element_by_tag_name('body')
+		self.assertIn('User name:', body.text)
+		self.assertIn('Password:', body.text)
+		
 		# He logs in using "johnlaput" as username and "pwd123" as password
-
+		self.browser.find_element_by_name('username').send_keys("johnlaput")
+		self.browser.find_element_by_name('password').send_keys("pwd123")
 		self.browser.implicitly_wait(3)
+		
+		# user clicks the save button
+		self.browser.find_element_by_css_selector("input[value='login']").click()
+		
+		
+		
+
+		
 		# He then is redirected to the main dashboard where there is a list of to-do things, which is empty for now
 		# He is greeted with a note "Hi John!"
 
