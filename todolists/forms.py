@@ -9,9 +9,10 @@ class TodoForm(forms.ModelForm):
 		super (TodoForm, self).__init__(*args,**kwargs)
 		self.fields.pop('owner')
 		
-	def save(self, commit=True):
+	def save(self, user=''):
 		todoItem = super(TodoForm, self).save(commit=False)
-		if commit:
-			todoItem.save()
+		todoItem.owner = user
+		
+		todoItem.save()
 		
 		return todoItem

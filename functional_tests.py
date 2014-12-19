@@ -1,7 +1,8 @@
 from selenium import webdriver
+from django.test import TestCaseSource
 import unittest
 
-class RegistrationTest(unittest.TestCase):
+class RegistrationTest(unittest.TestCaseSource):
 
 	def setUp(self):
 		self.browser = webdriver.Firefox()
@@ -97,7 +98,7 @@ class RegistrationTest(unittest.TestCase):
 		self.browser.find_element_by_name('date').send_keys(idate)
 		self.browser.find_element_by_name('status').send_keys(istatus)
 		
-		self.browser.find_element_by_css_selector("input[value='save']").click()
+		self.browser.find_element_by_css_selector("input[value='Create Article']").click()
 	
 	def test_a_register_login_view_listarticles_and_logout(self):
 		#user register

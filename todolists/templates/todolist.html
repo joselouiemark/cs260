@@ -4,13 +4,20 @@
 Hi {{ full_name }}!
 <br/>
 <ul>
-	<li><a href="/todolists/all">Todo list</a></li>
 	<li><a href="/todolists/create">Add Item</a></li>
 	<li><a href="/accounts/logout">Logout</a></li>
 </ul>
 <br/>
 <hr />
 <br/>
+Views by
+<br/>
+<ul>
+	<li><a href="/todolists/all/{{ statuscode }}/0/0/1">month</a></li>
+	<li><a href="/todolists/all/{{ statuscode }}/0/0/2">week</a></li>
+	<li><a href="/todolists/all/{{ statuscode }}/0/0/0">day</a></li>
+</ul>
+
 <form action="/todolists/all/" method="post">
 	<label for="sdate">Start Date:</label><br/>
 	<input type="text" name="sdate" value="" id="sdate" />
@@ -26,12 +33,12 @@ Hi {{ full_name }}!
 {% endblock %}
 
 {% block content %}
-Today is {{ today }}
+{{ datedisplay }}
 
 {% for todoitem in todolist %}
 <div class="visitentry">
-<!--<div style="font-size:16px;float:right;"><a href="/todolists/todoitem/{{ todoitem.id }}/">{{ todoitem.date }}</a></div>-->
-<div style="font-size:24px;padding:10px;"><a href="/todolists/todoitem/{{ todoitem.id }}/">{{ todoitem.title }}</a></div>
+<!--<div style="font-size:16px;float:right;"><a href="/todolists/todo/{{ todoitem.id }}/">{{ todoitem.date }}</a></div>-->
+<div style="font-size:24px;padding:10px;"><a href="/todolists/todo/{{ todoitem.id }}/">{{ todoitem.title }}</a></div>
 <div style="padding:0px 0px 10px 5px;">{{ todoitem.summary }}</div>
 
 {% if todoitem.status == 1 %}
