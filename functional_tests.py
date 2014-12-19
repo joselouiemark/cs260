@@ -8,8 +8,8 @@ class RegistrationTest(unittest.TestCase):
 
 	def tearDown(self):
 		self.browser.quit()
-
-	def test_can_go_to_homepage_and_register(self):
+		
+	def do_register(self):
 		# John wants to organize his activities for each day. Goes to the scheduler app homepage
 		self.browser.get('http://localhost:8000')
 
@@ -55,9 +55,9 @@ class RegistrationTest(unittest.TestCase):
 		# Goes to the registration confirmation page and is registered
 		body = self.browser.find_element_by_tag_name('body')
 		self.assertIn('You have registered', body.text)
-		
-		login_link = self.browser.find_element_by_link_text('here')
-		login_link.click()
+	
+	def do_login(self):
+		self.browser.get('http://localhost:8000/accounts/login/')
 		
 		# He is then redirected to the homepage and invited again to login or create an account
 		# Reset browser
@@ -75,11 +75,10 @@ class RegistrationTest(unittest.TestCase):
 		
 		# He then is redirected to the main dashboard where there is a list of to-do things, which is empty for now
 		self.assertIn('TODO', self.browser.title)
+	
+	def do_logout(self):
+		self.browser.get('http://localhost:8000')
 		
-		# He is greeted with a note "Hi John!"
-		body = self.browser.find_element_by_tag_name('body')
-		self.assertIn('Hi John Laput!', body.text)
-
 		# He is then decided to logout for now and sleep
 		logout_link = self.browser.find_element_by_link_text('Logout')
 		logout_link.click()
@@ -88,7 +87,167 @@ class RegistrationTest(unittest.TestCase):
 		body = self.browser.find_element_by_tag_name('body')
 		self.assertIn('You are now logged out', body.text)
 		
-		#self.fail('Finish the test!')
+	def do_add_item(self,ititle,isummary,idate,istatus):
+		self.browser.get('http://localhost:8000')
+		reg_link = self.browser.find_element_by_link_text('Add Item')
+		reg_link.click()
+	
+		self.browser.find_element_by_name('title').send_keys(ititle)
+		self.browser.find_element_by_name('summary').send_keys(isummary)
+		self.browser.find_element_by_name('date').send_keys(idate)
+		self.browser.find_element_by_name('status').send_keys(istatus)
+		
+		self.browser.find_element_by_css_selector("input[value='save']").click()
+	
+	def test_a_register_login_view_listarticles_and_logout(self):
+		#user register
+		self.do_register()
+		
+		login_link = self.browser.find_element_by_link_text('here')
+		login_link.click()
+		
+		#user login
+		self.do_login()
+		
+		# He is greeted with a note "Hi John!"
+		body = self.browser.find_element_by_tag_name('body')
+		self.assertIn('Hi John Laput!', body.text)
+
+		self.do_logout()
+		
+	def test_b_item_add(self):
+		#user login
+		self.do_login()
+		
+		# He is greeted with a note "Hi John!"
+		body = self.browser.find_element_by_tag_name('body')
+		self.assertIn('Hi John Laput!', body.text)
+
+		# Seeing he don't have any todo items he decided to add
+		# Added "eat at jollibee" todo
+		self.do_add_item('Eat at Jollibee','Eat fries and burger',"2014-12-25",1)
+		self.do_add_item('Buy shoes','Nike air or Jordan brand',"2014-12-25",1)
+		self.do_add_item('Cut hair','Army cut',"2014-12-26",1)
+		self.do_add_item('Walk the doc','Three times around the park',"2014-12-27",1)
+		
+		self.browser.get('http://localhost:8000')
+		
+		body = self.browser.find_element_by_tag_name('body')
+		self.assertIn('Eat at Jollibee', body.text)
+		self.assertIn('Buy shoes', body.text)
+		self.assertIn('Cut hair', body.text)
+		self.assertIn('Walk the doc', body.text)
+		
+		# He decided to logout
+		self.do_logout()
+		
+	def test_c_adjust_time(self):
+		#user login
+		self.do_login()
+		
+		# He is greeted with a note "Hi John!"
+		body = self.browser.find_element_by_tag_name('body')
+		self.assertIn('Hi John Laput!', body.text)
+
+		# Seeing he don't have any todo items he decided to add
+		# Added "eat at jollibee" todo
+		self.do_add_item('Eat at Jollibee','Eat fries and burger',"2014-11-01",1)
+		self.do_add_item('Buy shoes','Nike air or Jordan brand',"2014-12-01",1)
+		self.do_add_item('Cut hair','Army cut',"2014-11-02",1)
+		self.do_add_item('Walk the doc','Three times around the park',"2013-11-01",1)
+		
+		self.browser.get('http://localhost:8000')
+		
+		body = self.browser.find_element_by_tag_name('body')
+		self.assertNotIn('2014-11-01', body.text)
+		self.assertNotIn('2014-12-01', body.text)
+		self.assertNotIn('2014-11-02', body.text)
+		self.assertNotIn('2013-11-01', body.text)
+		
+		# He decided to logout
+		self.do_logout()
+		
+	
+	def test_d_edit_item_to_done(self):
+		#user login
+		self.do_login()
+		
+		# He is greeted with a note "Hi John!"
+		body = self.browser.find_element_by_tag_name('body')
+		self.assertIn('Hi John Laput!', body.text)
+
+		# Seeing he don't have any todo items he decided to add
+		# Added "eat at jollibee" todo
+		self.do_add_item('Eat at Jollibee','Eat fries and burger',"2014-11-01",1)
+		
+		# He was done
+		self.browser.get('http://localhost:8000')
+		logout_link = self.browser.find_element_by_link_text('Finish')
+		logout_link.click()
+		
+		body = self.browser.find_element_by_tag_name('body')
+		self.assertIn('Done', body.text)
+		
+		# He decided to logout
+		self.do_logout()
+		
+	def test_e_edit_item_to_cancelled(self):
+		#user login
+		self.do_login()
+		
+		# He is greeted with a note "Hi John!"
+		body = self.browser.find_element_by_tag_name('body')
+		self.assertIn('Hi John Laput!', body.text)
+
+		# Seeing he don't have any todo items he decided to add
+		# Added "eat at jollibee" todo
+		self.do_add_item('Eat at Jollibee','Eat fries and burger',"2014-11-01",1)
+		
+		# He has no money thus decided to cancel
+		self.browser.get('http://localhost:8000')
+		logout_link = self.browser.find_element_by_link_text('Cancel')
+		logout_link.click()
+		
+		body = self.browser.find_element_by_tag_name('body')
+		self.assertNotIn('Cancelled', body.text)
+		
+		# He decided to logout
+		self.do_logout()
+		
+	def test_e_edit_item_edit_date_title_and_summary(self):
+		#user login
+		self.do_login()
+		
+		# He is greeted with a note "Hi John!"
+		body = self.browser.find_element_by_tag_name('body')
+		self.assertIn('Hi John Laput!', body.text)
+
+		# Seeing he don't have any todo items he decided to add
+		# Added "eat at jollibee" todo
+		self.do_add_item('Eat at Jollibee','Eat fries and burger',"2014-11-01",1)
+		
+		# He clicked title to view and edit todo
+		self.browser.get('http://localhost:8000')
+		logout_link = self.browser.find_element_by_link_text('Eat at Jollibee')
+		logout_link.click()
+		
+		# He decided to go to McDonald's instead
+		self.browser.find_element_by_name('title').send_keys('Eat at mcdo')
+		# Get McFloat instead
+		self.browser.find_element_by_name('summary').send_keys('McFloat and Fries')
+		# Go next year on his birthday instead
+		self.browser.find_element_by_name('date').send_keys('2015-02-01')
+		
+		self.browser.find_element_by_css_selector("input[value='save']").click()
+		
+		self.browser.get('http://localhost:8000')
+		body = self.browser.find_element_by_tag_name('body')
+		self.assertIn('Eat at mcdo', body.text)
+		self.assertIn('McFloat and Fries', body.text)
+		self.assertIn('2015-02-01', body.text)
+		
+		# He decided to logout
+		self.do_logout()
 
 if __name__ == '__main__':
 	unittest.main(warnings='ignore')
