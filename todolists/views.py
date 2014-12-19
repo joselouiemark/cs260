@@ -11,12 +11,13 @@ from datetime import datetime
 from datetime import date
 
 # Create your views here.
-def todolist(request):
-    if not request.user.is_authenticated():
+def todolist(request, stat=0, dfrom='', dto=''):
+	if not request.user.is_authenticated():
 		return HttpResponseRedirect('/accounts/login/')
 	
 	allObjs = Todo.objects.filter(owner=request.user.username);
 	
+	stat = int(stat)
 	if stat > 0 and stat < 4:
 		allObjs = allObjs.filter(status=stat)
 		
