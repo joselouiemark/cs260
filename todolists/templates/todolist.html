@@ -1,0 +1,72 @@
+ {% extends "base.html" %}
+
+{% block sidebar %}
+<ul>
+	<li><a href="/todolists/all">Todo list</a></li>
+	<li><a href="/todolists/create">Add Item</a></li>
+</ul>
+<br/>
+<hr />
+<br/>
+<form action="/todolists/all/" method="post">
+	<label for="sdate">Start Date:</label><br/>
+	<input type="text" name="sdate" value="" id="sdate" />
+	<br/>
+	<label for="edate">End Date:</label><br/>
+	<input type="text" name="edate" value="" id="edate" />
+	<br/>
+	<label for="type">Status:</label><br/>
+	<input type="text" name="type" value="" id="type" />
+	<br/><br/>
+	<input type="submit" value="search" />
+</form>
+{% endblock %}
+
+{% block content %}
+Today is {{ today }}
+
+{% for todoitem in todolist %}
+<div class="visitentry">
+<!--<div style="font-size:16px;float:right;"><a href="/todolists/todoitem/{{ todoitem.id }}/">{{ todoitem.date }}</a></div>-->
+<div style="font-size:24px;padding:10px;"><a href="/todolists/todoitem/{{ todoitem.id }}/">{{ todoitem.title }}</a></div>
+<div style="padding:0px 0px 10px 5px;">{{ todoitem.summary }}</div>
+
+{% if todoitem.status == 1 %}
+    <div class="status1">
+		Waiting
+	</div>
+	<center>
+	<table>
+	<tr>
+	<td>
+	<a href="/todolists/finish/{{ todoitem.id }}">
+	<div class="status2" style="font-size:12px;padding:2px;width:35px">
+		Finish
+	</div>
+	</a>
+	</td>
+	<td>
+	<a href="/todolists/cancel/{{ todoitem.id }}">
+	<div class="status3" style="font-size:12px;padding:2px;width:40px">
+		Cancel
+	</div>
+	</a>
+	</td>
+	</tr>
+	</table>
+	</center>
+{% elif todoitem.status == 2 %}
+    <div class="status2">
+		Done
+	</div>
+{% elif todoitem.status == 3 %}
+    <div class="status3">
+		Cancelled
+	</div>
+{% endif %}
+
+
+</div>
+{% endfor %}
+
+{% endblock %}
