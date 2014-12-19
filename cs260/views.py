@@ -34,7 +34,7 @@ def auth_view(request):
 	
 	if user is not None:
 		auth.login(request, user)
-		return HttpResponseRedirect('/scheduler/all')
+		return HttpResponseRedirect('/todolists/all')
 	else:
 		return HttpResponseRedirect('/accounts/invalid')
 
