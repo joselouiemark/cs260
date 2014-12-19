@@ -1,10 +1,11 @@
 from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
-	url(r'^$', 'scheduler.views.todolist'),
+	url(r'^$', 'todolists.views.todolist'),
 	
 	url(r'^accounts/register/$', 'cs260.views.register_user'),
 	url(r'^accounts/login/$', 'cs260.views.login'),
